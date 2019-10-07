@@ -1,0 +1,57 @@
+{
+    "name": "siketyan/brainfucked",
+    "description": "Object Oriented Brainfuck Interpreter in PHP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Naoki Ikeguchi",
+            "email": "root@siketyan.dev"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ray/di": "^2.9"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "phpmd/phpmd": "^2.7",
+        "phpstan/phpstan-shim": "^0.11",
+        "phpunit/phpunit": "^8.4",
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Siketyan\\Brainfucked\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Siketyan\\Brainfucked\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/phpunit"
+        ],
+        "tests": [
+            "@cs",
+            "vendor/bin/phpmd src,tests text ./phpmd.xml",
+            "vendor/bin/phpstan analyse -l max src tests -c phpstan.neon --no-progress",
+            "@test"
+        ],
+        "coverage": [
+            "php -dzend_extension=xdebug.so ./vendor/bin/phpunit --coverage-text --coverage-html=build/coverage"
+        ],
+        "cs": [
+            "vendor/bin/php-cs-fixer fix -v --dry-run",
+            "vendor/bin/phpcs --standard=phpcs.xml src;"
+        ],
+        "cs-fix": [
+            "vendor/bin/php-cs-fixer fix -v",
+            "vendor/bin/phpcbf src tests"
+        ]
+    }
+}
