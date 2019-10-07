@@ -1,0 +1,65 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2.1
+
+executors:
+  default:
+    resource_class: small
+    docker:
+      - image: circleci/php:7.2
+    working_directory: ~/repo
+
+jobs:
+  build:
+    executor: default
+
+    steps:
+      - checkout
+
+      # Restore cached dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "composer.json" }}
+            - v1-dependencies-
+
+      - run:
+          name: Setup Composer
+          command: wget https://getcomposer.org/composer.phar && chmod 0700 ./composer.phar
+
+      - run:
+          name: Install dependencies
+          command: ./composer.phar install -n --prefer-dist --no-progress --no-suggest
+
+      # Cache dependencies
+      - save_cache:
+          key: v1-dependencies-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
+
+      # Persist built files to workspace
+      - persist_to_workspace:
+          root: .
+          paths:
+            - '*'
+
+  test:
+    executor: default
+
+    steps:
+      # Restore persisted workspace
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Run tests
+          command: ./composer.phar tests
+
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
