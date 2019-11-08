@@ -6,7 +6,7 @@ namespace Siketyan\Brainfucked\Memory;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
-use Siketyan\Brainfucked\Exception\OutOfRangeException;
+use Siketyan\Brainfucked\Exception\ArgumentOutOfRangeException;
 
 class ArrayMemoryTest extends TestCase
 {
@@ -49,7 +49,7 @@ class ArrayMemoryTest extends TestCase
      */
     public function testOutOfRange(): void
     {
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(ArgumentOutOfRangeException::class);
 
         $memory = new ArrayMemory($this->pointerP->reveal());
         $memory->set(256);

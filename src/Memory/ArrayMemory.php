@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siketyan\Brainfucked\Memory;
 
-use Siketyan\Brainfucked\Exception\OutOfRangeException;
+use Siketyan\Brainfucked\Exception\ArgumentOutOfRangeException;
 
 class ArrayMemory implements MemoryInterface
 {
@@ -46,7 +46,7 @@ class ArrayMemory implements MemoryInterface
     public function set(int $byte): void
     {
         if ($byte < self::BYTE_MIN_VALUE || $byte > self::BYTE_MAX_VALUE) {
-            throw new OutOfRangeException(
+            throw new ArgumentOutOfRangeException(
                 sprintf(
                     'The value must be between %d and %d.',
                     self::BYTE_MIN_VALUE,
