@@ -18,11 +18,17 @@ class InterpreterTest extends TestCase
      */
     private $loggerP;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp(): void
     {
         $this->loggerP = $this->prophesize(LoggerInterface::class);
     }
 
+    /**
+     * Tests to run the interpreter.
+     */
     public function testRun(): void
     {
         $instructions = [];
@@ -52,6 +58,9 @@ class InterpreterTest extends TestCase
         $interpreter->run();
     }
 
+    /**
+     * Tests to fast forward the interpreter.
+     */
     public function testFastForward(): void
     {
         $instructions = [];
@@ -75,6 +84,9 @@ class InterpreterTest extends TestCase
         $this->assertSame($position, $interpreter->getPosition());
     }
 
+    /**
+     * Tests to fast forward the interpreter with unresolved instruction.
+     */
     public function testFastForwardWithException(): void
     {
         $this->expectException(FastForwardException::class);
@@ -100,6 +112,9 @@ class InterpreterTest extends TestCase
         );
     }
 
+    /**
+     * Tests to get and set the position of the interpreter.
+     */
     public function testGetAndSetPosition(): void
     {
         $interpreter = new Interpreter(
