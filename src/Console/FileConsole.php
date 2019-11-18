@@ -9,12 +9,12 @@ use Siketyan\Brainfucked\Exception\EndOfFileException;
 class FileConsole implements ConsoleInterface
 {
     /**
-     * @var resource the file handle for input
+     * @var resource|false the file handle for input
      */
     private $inputHandle;
 
     /**
-     * @var resource the file handle for output
+     * @var resource|false the file handle for output
      */
     private $outputHandle;
 
