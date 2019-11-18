@@ -63,7 +63,10 @@ class FileConsoleTest extends TestCase
         );
     }
 
-    public function testInputWithException(): void
+    /**
+     * Tests to read a byte at the end of the file.
+     */
+    public function testInputWithEndOfFile(): void
     {
         $this->expectException(EndOfFileException::class);
 
