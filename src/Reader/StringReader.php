@@ -35,7 +35,7 @@ class StringReader implements ReaderInterface
      */
     public function read(): string
     {
-        if (! $this->isAvailable()) {
+        if (!$this->isAvailable()) {
             throw new EndOfStreamException(
                 'Arrived to the end of the buffer.'
             );
