@@ -11,6 +11,9 @@ executors:
       - image: circleci/php:7.2
     working_directory: ~/repo
 
+orbs:
+  codecov: codecov/codecov@1.0.5
+
 jobs:
   build:
     executor: default
@@ -55,6 +58,8 @@ jobs:
       - run:
           name: Run tests
           command: ./composer.phar tests
+
+      - codecov/upload
 
 workflows:
   build_and_test:
