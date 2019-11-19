@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Siketyan\Brainfucked\Console;
 
 use Siketyan\Brainfucked\Exception\EndOfFileException;
+use Siketyan\Brainfucked\Exception\IOException;
 
 class FileConsole implements ConsoleInterface
 {
@@ -23,10 +24,14 @@ class FileConsole implements ConsoleInterface
      */
     private $buffer;
 
-    public function __construct(string $inputUrl, string $outputUrl)
-    {
-        $this->inputHandle = fopen($inputUrl, 'rb');
-        $this->outputHandle = fopen($outputUrl, 'wb');
+    public function __construct(
+        string $inputUrl,
+        string $outputUrl,
+        string $inputMode = 'rb',
+        string $outputMode = 'wb'
+    ) {
+        $this->inputHandle = @fopen($inputUrl, $inputMode);
+        $this->outputHandle = @fopen($outputUrl, $outputMode);
     }
 
     /**
@@ -34,6 +39,12 @@ class FileConsole implements ConsoleInterface
      */
     public function input(): int
     {
+        if ($this->inputHandle === false) {
+            throw new IOException(
+                'Failed to open input file stream.'
+            );
+        }
+
         while (empty($this->buffer)) {
             $line = fgets($this->inputHandle);
 
@@ -60,6 +71,12 @@ class FileConsole implements ConsoleInterface
      */
     public function output(int $byte): void
     {
+        if ($this->outputHandle === false) {
+            throw new IOException(
+                'Failed to open input file stream.'
+            );
+        }
+
         fwrite($this->outputHandle, chr($byte));
     }
 }

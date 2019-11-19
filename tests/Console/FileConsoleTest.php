@@ -9,6 +9,7 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 use Siketyan\Brainfucked\Exception\EndOfFileException;
+use Siketyan\Brainfucked\Exception\IOException;
 
 class FileConsoleTest extends TestCase
 {
@@ -64,6 +65,22 @@ class FileConsoleTest extends TestCase
     }
 
     /**
+     * Tests to read a byte from the file that have failed to open.
+     */
+    public function testInputFromOpenFailedFile(): void
+    {
+        $this->expectException(IOException::class);
+
+        $console = new FileConsole(
+            $this->inputFile->url(),
+            $this->outputFile->url(),
+            'xb'
+        );
+
+        $console->input();
+    }
+
+    /**
      * Tests to read a byte at the end of the file.
      */
     public function testInputWithEndOfFile(): void
@@ -85,5 +102,22 @@ class FileConsoleTest extends TestCase
             'o',
             $this->outputFile->getContent()
         );
+    }
+
+    /**
+     * Tests to write the byte to the file that have failed to open.
+     */
+    public function testOutputToOpenFailedFile(): void
+    {
+        $this->expectException(IOException::class);
+
+        $console = new FileConsole(
+            $this->inputFile->url(),
+            $this->outputFile->url(),
+            'rb',
+            'xb'
+        );
+
+        $console->output(123);
     }
 }
