@@ -83,7 +83,7 @@ class FileConsole implements ConsoleInterface
     /**
      * Pops a character from the read buffer.
      *
-     * @return string|null
+     * @return string|null the popped character or null if there was nothing
      */
     private function popCharacterFromBuffer(): ?string
     {
