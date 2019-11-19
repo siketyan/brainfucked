@@ -57,10 +57,7 @@ class FileConsole implements ConsoleInterface
             );
         }
 
-        /* @var string|null $character */
-        $character = array_pop($this->buffer);
-
-        if (empty($this->buffer) || $character === null) {
+        if (empty($this->buffer) || ($character = $this->popCharacterFromBuffer()) === null) {
             throw new EndOfFileException(
                 'Arrived to the end of the file.'
             );
@@ -81,5 +78,15 @@ class FileConsole implements ConsoleInterface
         }
 
         fwrite($this->outputHandle, chr($byte));
+    }
+
+    /**
+     * Pops a character from the read buffer.
+     *
+     * @return string|null
+     */
+    private function popCharacterFromBuffer(): ?string
+    {
+        return array_pop($this->buffer);
     }
 }
