@@ -57,7 +57,10 @@ class FileConsole implements ConsoleInterface
             );
         }
 
-        if (empty($this->buffer) || ($character = array_pop($this->buffer)) === null) {
+        /* @var string|null $character */
+        $character = array_pop($this->buffer);
+
+        if (empty($this->buffer) || $character === null) {
             throw new EndOfFileException(
                 'Arrived to the end of the file.'
             );
