@@ -5,3 +5,12 @@
 ![Codecov](https://img.shields.io/codecov/c/gh/Siketyan/Brainfucked?logo=codecov&logoColor=white&style=for-the-badge)
 
 Object Oriented Brainfuck Interpreter in PHP
+
+## Requirements
+- PHP 7.2+
+
+## Usage
+### Run a script
+```console
+$ php bin/brainfucked run examples/hello.bf
+```
