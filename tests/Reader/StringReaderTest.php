@@ -48,4 +48,15 @@ class StringReaderTest extends TestCase
         $this->reader->seek(3);
         $this->reader->read();
     }
+
+    /**
+     * Tests to get the name.
+     */
+    public function testGetName(): void
+    {
+        $this->assertSame(
+            '[String]',
+            $this->reader->getName()
+        );
+    }
 }

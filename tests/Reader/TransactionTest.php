@@ -42,4 +42,20 @@ class TransactionTest extends TestCase
 
         $transaction->rollback();
     }
+
+    /**
+     * Tests to get the reader.
+     */
+    public function testGetReader(): void
+    {
+        $this->readerP
+            ->getPosition()
+            ->willReturn(123)
+            ->shouldBeCalledOnce();
+
+        $reader = $this->readerP->reveal();
+        $transaction = new Transaction($reader);
+
+        $this->assertSame($reader, $transaction->getReader());
+    }
 }

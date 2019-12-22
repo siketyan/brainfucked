@@ -36,4 +36,15 @@ class SourcemapTest extends TestCase
         $this->assertSame(self::SOURCE, $this->sourcemap->getSource());
         $this->assertSame(self::POSITION, $this->sourcemap->getPosition());
     }
+
+    /**
+     * Tests to convert to string.
+     */
+    public function testToString(): void
+    {
+        $this->assertSame(
+            self::SOURCE . ':' . self::POSITION,
+            (string) $this->sourcemap
+        );
+    }
 }
