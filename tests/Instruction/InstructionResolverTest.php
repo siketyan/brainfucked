@@ -48,11 +48,29 @@ class InstructionResolverTest extends TestCase
     }
 
     /**
-     * Tests to resolve the instruction,
+     * Tests to resolve the instruction when no instruction hit.
      */
     public function testResolveNotExists(): void
     {
         $reader = new StringReader('___');
+        $transaction = new Transaction($reader);
+
+        $languageP = $this->prophesize(LanguageInterface::class);
+
+        $this->assertNull(
+            $this->resolver->resolve(
+                $languageP->reveal(),
+                $transaction
+            )
+        );
+    }
+
+    /**
+     * Tests to resolve the instruction when arrived to the end of the stream.
+     */
+    public function testResolveEndOfStream(): void
+    {
+        $reader = new StringReader('a');
         $transaction = new Transaction($reader);
 
         $languageP = $this->prophesize(LanguageInterface::class);
