@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Siketyan\Brainfucked\Instruction;
 
 use Siketyan\Brainfucked\Language\LanguageInterface;
-use Siketyan\Brainfucked\Reader\ReaderInterface;
 use Siketyan\Brainfucked\Runner\RunnerInterface;
 
 interface InstructionInterface
@@ -25,12 +24,11 @@ interface InstructionInterface
     public function do(RunnerInterface $runner): void;
 
     /**
-     * Checks whether the instruction supports the token at current head of the reader or not.
+     * Gets the token for the instruction.
      *
-     * @param LanguageInterface $language the language to check
-     * @param ReaderInterface   $reader   the reader to read from
+     * @param LanguageInterface $language the language of the token
      *
-     * @return bool true if supports
+     * @return string the token of the instruction
      */
-    public function supports(LanguageInterface $language, ReaderInterface $reader): bool;
+    public function getToken(LanguageInterface $language): string;
 }
