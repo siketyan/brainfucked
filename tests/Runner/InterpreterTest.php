@@ -10,6 +10,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Siketyan\Brainfucked\Exception\FastForwardException;
 use Siketyan\Brainfucked\Instruction\InstructionInterface;
 use Siketyan\Brainfucked\Logger\LoggerInterface;
+use Siketyan\Brainfucked\Runtime\Operation;
 
 class InterpreterTest extends TestCase
 {
@@ -31,27 +32,34 @@ class InterpreterTest extends TestCase
      */
     public function testRun(): void
     {
-        $instructions = [];
+        /* @var Operation[] $operations */
+        $operations = [];
 
         for ($i = 0; $i < 2; $i++) {
             $instructionP = $this->prophesize(InstructionInterface::class);
+            $operationP = $this->prophesize(Operation::class);
 
             /* @noinspection PhpParamsInspection */
             $instructionP
                 ->do(Argument::type(RunnerInterface::class))
                 ->shouldBeCalledOnce();
 
-            $instructions[] = $instructionP->reveal();
+            $operationP
+                ->getInstruction()
+                ->willReturn($instructionP->reveal())
+                ->shouldBeCalledOnce();
+
+            $operations[] = $operationP->reveal();
         }
 
-        foreach ($instructions as $instruction) {
+        foreach ($operations as $operation) {
             $this->loggerP
-                ->log($instruction)
+                ->log($operation)
                 ->shouldBeCalledOnce();
         }
 
         $interpreter = new Interpreter(
-            $instructions,
+            $operations,
             $this->loggerP->reveal()
         );
 
@@ -63,24 +71,29 @@ class InterpreterTest extends TestCase
      */
     public function testFastForward(): void
     {
-        $instructions = [];
+        /* @var Operation[] $operations */
+        $operations = [];
 
         for ($i = 0; $i < 4; $i++) {
-            $instructions[] =
-                $this
-                    ->prophesize(InstructionInterface::class)
-                    ->reveal();
+            $instructionP = $this->prophesize(InstructionInterface::class);
+            $operationP = $this->prophesize(Operation::class);
+
+            $operationP
+                ->getInstruction()
+                ->willReturn($instructionP->reveal());
+
+            $operations[] = $operationP->reveal();
         }
 
         $position = 2;
-        $instruction = $instructions[$position];
+        $operation = $operations[$position];
 
         $interpreter = new Interpreter(
-            $instructions,
+            $operations,
             $this->loggerP->reveal()
         );
 
-        $interpreter->fastForward($instruction);
+        $interpreter->fastForward($operation->getInstruction());
         $this->assertSame($position, $interpreter->getPosition());
     }
 
@@ -91,17 +104,23 @@ class InterpreterTest extends TestCase
     {
         $this->expectException(FastForwardException::class);
 
-        $instructions = [];
+        /* @var Operation[] $operations */
+        $operations = [];
 
         for ($i = 0; $i < 2; $i++) {
-            $instructions[] =
-                $this
-                    ->prophesize(InstructionInterface::class)
-                    ->reveal();
+            $instructionP = $this->prophesize(InstructionInterface::class);
+            $operationP = $this->prophesize(Operation::class);
+
+            $operationP
+                ->getInstruction()
+                ->willReturn($instructionP->reveal())
+                ->shouldBeCalledOnce();
+
+            $operations[] = $operationP->reveal();
         }
 
         $interpreter = new Interpreter(
-            $instructions,
+            $operations,
             $this->loggerP->reveal()
         );
 

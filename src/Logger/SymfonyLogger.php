@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Siketyan\Brainfucked\Logger;
 
-use Siketyan\Brainfucked\Instruction\InstructionInterface;
+use Siketyan\Brainfucked\Runtime\Operation;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SymfonyLogger implements LoggerInterface
@@ -22,12 +22,17 @@ class SymfonyLogger implements LoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function log(InstructionInterface $instruction): void
+    public function log(Operation $operation): void
     {
         $this->output->write(
-            '<comment>' . ((string) $instruction) . '</comment>',
+            '<comment>' . ((string) $operation->getInstruction()) . '</comment>',
             false,
             OutputInterface::VERBOSITY_VERBOSE
+        );
+
+        $this->output->writeln(
+            ' (' . ((string) $operation->getSourcemap()) . ')',
+            OutputInterface::VERBOSITY_VERY_VERBOSE
         );
     }
 }

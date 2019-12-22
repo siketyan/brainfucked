@@ -9,7 +9,7 @@ use Siketyan\Brainfucked\Instruction\InstructionInterface;
 interface RunnerInterface
 {
     /**
-     * Runs the instructions.
+     * Runs the operations.
      */
     public function run(): void;
 
@@ -23,14 +23,14 @@ interface RunnerInterface
     /**
      * Gets the position where the interpreter is running at.
      *
-     * @return int the current instruction position
+     * @return int the current operation position
      */
     public function getPosition(): int;
 
     /**
      * Sets the position where the interpreter is running at.
      *
-     * @param int $position the instruction position to set
+     * @param int $position the operation position to set
      */
     public function setPosition(int $position): void;
 }

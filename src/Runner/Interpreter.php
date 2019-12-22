@@ -7,13 +7,14 @@ namespace Siketyan\Brainfucked\Runner;
 use Siketyan\Brainfucked\Exception\FastForwardException;
 use Siketyan\Brainfucked\Instruction\InstructionInterface;
 use Siketyan\Brainfucked\Logger\LoggerInterface;
+use Siketyan\Brainfucked\Runtime\Operation;
 
 class Interpreter implements RunnerInterface
 {
     /**
-     * @var InstructionInterface[] the instructions to run
+     * @var Operation[] the instructions to run
      */
-    private $instructions;
+    private $operations;
 
     /**
      * @var int the current instruction position where the interpreter is running
@@ -28,12 +29,12 @@ class Interpreter implements RunnerInterface
     /**
      * Interpreter constructor.
      *
-     * @param InstructionInterface[] $instructions the instructions to run
-     * @param LoggerInterface        $logger       the logger to use
+     * @param Operation[]     $operations the operations to run
+     * @param LoggerInterface $logger     the logger to use
      */
-    public function __construct(array $instructions, LoggerInterface $logger)
+    public function __construct(array $operations, LoggerInterface $logger)
     {
-        $this->instructions = $instructions;
+        $this->operations = $operations;
         $this->position = 0;
         $this->logger = $logger;
     }
@@ -43,12 +44,12 @@ class Interpreter implements RunnerInterface
      */
     public function run(): void
     {
-        for ($count = count($this->instructions); $this->position < $count; $this->position++) {
-            $instruction = $this->instructions[$this->position];
+        for ($count = count($this->operations); $this->position < $count; $this->position++) {
+            $operation = $this->operations[$this->position];
 
-            $this->logger->log($instruction);
+            $this->logger->log($operation);
 
-            $instruction->do($this);
+            $operation->getInstruction()->do($this);
         }
     }
 
@@ -57,8 +58,8 @@ class Interpreter implements RunnerInterface
      */
     public function fastForward(InstructionInterface $instruction): void
     {
-        for ($p = $this->position, $count = count($this->instructions); $p < $count; $p++) {
-            if ($this->instructions[$p] === $instruction) {
+        for ($p = $this->position, $count = count($this->operations); $p < $count; $p++) {
+            if ($this->operations[$p]->getInstruction() instanceof $instruction) {
                 $this->setPosition($p);
 
                 return;
