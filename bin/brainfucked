@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Ray\Di\Injector;
+use Siketyan\Brainfucked\Command\RunCommand;
+use Siketyan\Brainfucked\DependencyInjection\Module\CommandModule;
+use Symfony\Component\Console\Application;
+
+$module = new CommandModule();
+$injector = new Injector($module);
+
+$application = new Application();
+$application->addCommands([
+    $injector->getInstance(RunCommand::class),
+]);
+
+try {
+    $application->run();
+} catch (Exception $e) {
+    print($e->getMessage() . PHP_EOL);
+    print($e->getTraceAsString() . PHP_EOL);
+    die(1);
+}
