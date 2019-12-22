@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Siketyan\Brainfucked\Logger;
 
-use Siketyan\Brainfucked\Instruction\InstructionInterface;
+use Siketyan\Brainfucked\Runtime\Operation;
 
 interface LoggerInterface
 {
     /**
-     * Logs the instruction.
+     * Logs the operation.
      *
-     * @param InstructionInterface $instruction the instruction to run
+     * @param Operation $operation the operation to run
      */
-    public function log(InstructionInterface $instruction): void;
+    public function log(Operation $operation): void;
 }

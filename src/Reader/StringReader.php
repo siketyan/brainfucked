@@ -8,6 +8,8 @@ use Siketyan\Brainfucked\Exception\EndOfStreamException;
 
 class StringReader implements ReaderInterface
 {
+    private const NAME = '[String]';
+
     /**
      * @var string
      */
@@ -58,6 +60,14 @@ class StringReader implements ReaderInterface
     public function getPosition(): int
     {
         return $this->position;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return self::NAME;
     }
 
     /**

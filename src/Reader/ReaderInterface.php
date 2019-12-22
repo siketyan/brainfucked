@@ -28,6 +28,13 @@ interface ReaderInterface
     public function getPosition(): int;
 
     /**
+     * Gets the name of the source file or stream.
+     *
+     * @return string the name of the source
+     */
+    public function getName(): string;
+
+    /**
      * Checks whether the reader can read more or not.
      *
      * @return bool true if the reader is available to read

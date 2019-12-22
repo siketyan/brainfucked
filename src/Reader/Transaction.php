@@ -37,4 +37,14 @@ class Transaction
     {
         $this->reader->seek($this->position);
     }
+
+    /**
+     * Gets the reader of the transaction.
+     *
+     * @return ReaderInterface the reader to run the transaction on
+     */
+    public function getReader(): ReaderInterface
+    {
+        return $this->reader;
+    }
 }
