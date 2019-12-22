@@ -12,7 +12,7 @@ class StringReaderTest extends TestCase
     /**
      * @var StringReader the reader to test
      */
-    private $reader;
+    protected $reader;
 
     /**
      * {@inheritdoc}
