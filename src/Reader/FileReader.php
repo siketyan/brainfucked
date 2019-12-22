@@ -16,7 +16,7 @@ class FileReader extends StringReader
     public function __construct(string $uri)
     {
         $this->name = basename($uri);
-        $buffer = file_get_contents($uri);
+        $buffer = @file_get_contents($uri);
 
         if ($buffer === false) {
             throw new IOException(
